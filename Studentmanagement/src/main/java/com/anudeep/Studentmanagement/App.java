@@ -10,28 +10,49 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import com.anudeep.MasterEmpAPP.Employee;
-
+import com.mysql.cj.xdevapi.SessionFactory;
 public class App 
 {
+
+	static EntityManagerFactory emf  =  Persistence.createEntityManagerFactory("SachinPamar");
+	
+  	static EntityManager em  = emf.createEntityManager() ;
 	static Scanner sc=new Scanner(System.in);
     public static void main( String[] args )
     
     {
     	
     	LoginDetails ld= new LoginDetails();
-    	//ld.setName("Rajiv");
-    //	ld.setPass("1");
-    	String name=ld.getName();
-    	String pass=ld.getPass();
-    	//System.out.println(name + pass);
-    //	String name="Rajiv";
-    //	String pass="123";
     	System.out.println("Enter the username");
     	String userName=sc.next();
+    	String idname=null;
+    	String idpass = null;
+		javax.persistence.Query queryd = em.createQuery("select name from LoginDetails");
+		List<String> listd=queryd.getResultList();
+		for(String ss: listd)
+		{
+			if(userName.equals(ss))
+			{
+				//System.out.println(ss);
+			    idname=ss;
+				break;
+			}
+		}
     	System.out.println("Enter the password");
     	String password=sc.next();
+    	Query q=em.createQuery("select pass from LoginDetails");
+		List<String> listp=q.getResultList();
+		for(String ss: listp)
+		{
+			if(password.equals(ss))
+			{
+				//System.out.println(ss);
+					idpass=ss;
+					break;
+			}
+		}
     	
-		if(name.equals(userName) && pass.equals(password))
+	if(userName.equals(idname) && password.equals(idpass))
 			
 		{
 	     boolean flg=true;
@@ -46,16 +67,15 @@ public class App
 	    	System.out.println("6 for show all student details");
 	    	System.out.println("7 for Enter course id name and details");
 	    	System.out.println("8 for show all course details");
+	    	System.out.println("9 set new admin login details");
+	    	System.out.println("10 show the all data adminlogin details");
 	    	System.out.println("0 for Exit");
 	    	int num=sc.nextInt();
 	    	sc.nextLine();
 	    	
-	     	EntityManagerFactory emf  =  Persistence.createEntityManagerFactory("SachinPamar");
-			
-		  	EntityManager em  = emf.createEntityManager() ;
-		  
 	    	switch(num)
 	    	{
+	    	
 	    	case 1:
 	    		System.out.println("Enter the id ");
 	    		 String id=sc.nextLine();
@@ -72,7 +92,7 @@ public class App
 			  	em.persist(s);
 			  	
 			  	em.getTransaction().commit();
-				em.close();
+				
 			  	break;
 			  	
 	    	case 2:
@@ -89,7 +109,7 @@ public class App
 			  	}else
 			  	System.out.println("Student not found...");
 			  	System.out.println("done");
-			  	em.close();
+			  
 			  	break;
 	    	case 3:
 	    		
@@ -102,7 +122,7 @@ public class App
 	    		}
 	    		em.getTransaction().begin();
 	    		em.getTransaction().commit();
-	    	  	em.close();
+	    	  	
 	    		break;
 	    	
 	    		
@@ -147,7 +167,7 @@ public class App
 	    		em.getTransaction().commit();
 	    		System.out.println("change  name, course and city ");
 	    		}
-	    		em.close();
+	    		
 	    		System.out.println("done");
 	    		break;
 	    
@@ -161,7 +181,7 @@ public class App
 	    		}
 	    		em.getTransaction().begin();
 	    		em.getTransaction().commit();
-	    	  	em.close();
+	    	  
 	    		break;
 	    	case 7:
 	    		Scanner sc1=new Scanner(System.in);
@@ -181,7 +201,7 @@ public class App
 			  	em.persist(cd);
 			  	
 			  	em.getTransaction().commit();
-				em.close();
+				
 				break;
 	    	case 8:
 	    		System.out.println("Show all couse ");
@@ -193,12 +213,40 @@ public class App
 	    		}
 	    		em.getTransaction().begin();
 	    		em.getTransaction().commit();
-	    	  	em.close();
+	    	  	
 	    		break;
+	       case 9: 
+	    	    Scanner sc11=new Scanner(System.in);
+	    		System.out.println("set  new admin ");
+	    		String adminName=sc11.next();
+				System.out.println("set password ");
+				String adminPass=sc11.next();
+				em.getTransaction().begin();
+				ld.setName(adminName);
+				ld.setPass(adminPass);
+				em.persist(ld);
+			  	
+			  	em.getTransaction().commit();
+				
+			  	break;
+	    	case 10:
+	    		System.out.println("show all admin name");
+	    		javax.persistence.Query queryld = em.createQuery("select s from LoginDetails s");
+	    		List<LoginDetails> listld=queryld.getResultList();
+	    		for(LoginDetails ss: listld)
+	    		{
+	    			System.out.println(ss);
+	    		}
+	    		em.getTransaction().begin();
+	    		em.getTransaction().commit();
+	    	  	
+	    		break;
+	    		
 	    		
 	    	case 0:
 	    		flg=false;
 	    		System.out.println("Program closed ");
+	    		em.close();
 	    		break;
 	    		}
 	         }

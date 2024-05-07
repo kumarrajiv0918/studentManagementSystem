@@ -1,12 +1,7 @@
 package com.anudeep.Studentmanagement;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedNativeQuery;
-
-import com.anudeep.MasterEmpAPP.Employee;
 
 @Entity
 //@NamedNativeQuery(name="findALL", query = "select * from Student" , resultClass=Employee.class)

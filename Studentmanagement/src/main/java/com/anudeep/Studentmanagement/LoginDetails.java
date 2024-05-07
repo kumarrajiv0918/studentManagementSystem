@@ -1,16 +1,21 @@
 package com.anudeep.Studentmanagement;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class LoginDetails {
-	
-	private String name="Rajiv";
-	private String pass="123";
+	@Id
+	private String name;
+	@Column
+	private String pass;
 	
 	public String getName() {
 		return name;
 	}
 	public LoginDetails() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public LoginDetails(String name, String pass) {
 		super();
@@ -23,8 +28,12 @@ public class LoginDetails {
 	public String getPass() {
 		return pass;
 	}
+
 	public void setPass(String pass) {
 		this.pass = pass;
 	}	
-
+	@Override
+	public String toString() {
+		return "LoginDetails [name=" + name + ", pass=" + pass + "]";
+	}
 }
